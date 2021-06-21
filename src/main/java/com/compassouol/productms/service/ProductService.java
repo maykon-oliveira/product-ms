@@ -5,6 +5,7 @@ import com.compassouol.productms.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,5 +23,9 @@ public class ProductService {
 
   public Optional<Product> findById(String id) {
     return productRepository.findById(id);
+  }
+
+  public List<Product> findAll() {
+    return productRepository.findAll();
   }
 }

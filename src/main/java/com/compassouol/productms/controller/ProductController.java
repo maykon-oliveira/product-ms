@@ -44,11 +44,24 @@ public class ProductController {
   }
 
   @GetMapping("{id}")
-  public ResponseEntity<Product> findBYId(@PathVariable String id) {
+  public ResponseEntity<Product> findById(@PathVariable String id) {
     final var optionalProduct = productService.findById(id);
 
     return optionalProduct
         .map(ResponseEntity::ok)
+        .orElseGet(() -> ResponseEntity.notFound().build());
+  }
+
+  @DeleteMapping("{id}")
+  public ResponseEntity<?> deleteById(@PathVariable String id) {
+    final var optionalProduct = productService.findById(id);
+
+    return optionalProduct
+        .map(
+            it -> {
+              productService.deleteById(id);
+              return ResponseEntity.ok().build();
+            })
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 }

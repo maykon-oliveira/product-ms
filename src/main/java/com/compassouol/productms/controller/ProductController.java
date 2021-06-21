@@ -7,6 +7,7 @@ import com.compassouol.productms.service.ProductService;
 import com.compassouol.productms.util.ControllerConstants;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,5 +35,14 @@ public class ProductController {
     }
     final var product = mapper.map(createRequest, Product.class);
     return productService.save(product);
+  }
+
+  @GetMapping("{id}")
+  public ResponseEntity<Product> findBYId(@PathVariable String id) {
+    final var optionalProduct = productService.findById(id);
+
+    return optionalProduct
+        .map(ResponseEntity::ok)
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 }

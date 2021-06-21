@@ -38,6 +38,26 @@ public class ProductController {
     return productService.save(product);
   }
 
+  @PutMapping("{id}")
+  public ResponseEntity<Product> updateById(
+      @PathVariable String id,
+      @Valid @RequestBody ProductCreateRequest createRequest,
+      BindingResult result) {
+    final var optionalProduct = productService.findById(id);
+    if (optionalProduct.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+
+    if (result.hasErrors()) {
+      throw new EntityValidationException();
+    }
+
+    final var product = mapper.map(createRequest, Product.class);
+    product.setId(id);
+
+    return ResponseEntity.ok(productService.save(product));
+  }
+
   @GetMapping
   public List<Product> findAll() {
     return productService.findAll();

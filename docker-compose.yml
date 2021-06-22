@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  app:
+    container_name: product-ms
+    build:
+      context: .
+    ports:
+      - "9999:9999"
+    environment:
+      - "SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/db_products?ApplicationName=ProductMS"
+      - "SPRING_FLYWAY_URL=jdbc:postgresql://postgres-db:5432/db_products?ApplicationName=ProductMS+Flyway"
+      - "SPRING_JPA_SHOW_SQL=false"
+    networks:
+      - product-ms-network
+    depends_on:
+      - postgres-db
+  postgres-db:
+    image: postgres
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    ports:
+      - "5432:5432"
+    networks:
+      - product-ms-network
+networks:
+  product-ms-network:
+    driver: bridge

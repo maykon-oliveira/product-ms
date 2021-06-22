@@ -4,6 +4,7 @@ import com.compassouol.productms.controller.dto.ProductCreateRequest;
 import com.compassouol.productms.controller.exception.EntityValidationException;
 import com.compassouol.productms.entity.Product;
 import com.compassouol.productms.service.ProductService;
+import com.compassouol.productms.service.specification.ProductCriteria;
 import com.compassouol.productms.util.ControllerConstants;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -61,6 +62,11 @@ public class ProductController {
   @GetMapping
   public List<Product> findAll() {
     return productService.findAll();
+  }
+
+  @GetMapping("/search")
+  public List<Product> findAllSearch(ProductCriteria criteria) {
+    return productService.findAll(criteria);
   }
 
   @GetMapping("{id}")

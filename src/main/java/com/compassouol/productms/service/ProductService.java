@@ -2,6 +2,7 @@ package com.compassouol.productms.service;
 
 import com.compassouol.productms.entity.Product;
 import com.compassouol.productms.repository.ProductRepository;
+import com.compassouol.productms.service.specification.CriteriaSpecification;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +32,10 @@ public class ProductService {
 
   public void deleteById(String id) {
     productRepository.deleteById(id);
+  }
+
+  public List<Product> findAll(CriteriaSpecification criteriaSpecification) {
+    final var specification = criteriaSpecification.toSpecification();
+    return productRepository.findAll(specification);
   }
 }
